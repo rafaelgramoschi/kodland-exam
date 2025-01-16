@@ -5,16 +5,19 @@ from flask import (
     make_response
 )
 from werkzeug.security import check_password_hash, generate_password_hash
+#from flask_cors import cross_origin
 
 from app.db import get_db
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
 @bp.route('/signup', methods=['POST'])
+#@cross_origin(origins="*", supports_credentials=True)
 def signup():
     if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
+        data = request.get_json(force=True)
+        username = data.get('username')
+        password = data.get('password')
         db = get_db()
         error = None
 
@@ -40,12 +43,23 @@ def signup():
     return make_response(jsonify({ "response": f"{error}" }), 400)
     
 
+@bp.route('/users', methods=['GET'])
+def users():
+    if request.method == 'GET':
+        db = get_db()
+        error = None
+        results = db.execute(
+            'SELECT * FROM user'
+        ).fetchall()
+        users = [tuple(row) for row in results]
+        return make_response(jsonify({ "response": users }), 200)
 
 @bp.route('/login', methods=['POST'])
 def login():
     if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
+        data = request.get_json(force=True)
+        username = data.get('username')
+        password = data.get('password')
         db = get_db()
         error = None
         user = db.execute(
@@ -60,7 +74,10 @@ def login():
         if error is None:
             session.clear()
             session['user_id'] = user['id']
-            return make_response(jsonify({ "response": "success" }), 200)
+            return make_response(jsonify({ "response": "success", "user": {
+                "id": user['id'],
+                "score": user['score']
+            } }), 200)
 
         flash(error)
 
