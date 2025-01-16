@@ -15,6 +15,8 @@ async function apiLogin(username, password) {
   .catch(e=> console.log(e))
   userStore.session.id = result?.data?.user.id;
   userStore.session.score = result?.data?.user.score;
+  localStorage.setItem('session_id', userStore.session.id)
+  localStorage.setItem('score', userStore.session.score)
   console.log("LOGIN PROCESS ->", result?.status);
 }
 

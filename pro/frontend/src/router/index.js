@@ -8,6 +8,7 @@
 import { createRouter, createWebHistory } from 'vue-router/auto'
 import { setupLayouts } from 'virtual:generated-layouts'
 import { routes } from 'vue-router/auto-routes'
+import { useUserStore } from '@/stores/user'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -28,6 +29,28 @@ router.onError((err, to) => {
     console.error(err)
   }
 })
+
+router.beforeEach((to, from, next) => {
+  const userStore = useUserStore();
+
+  const requiresAuth = {
+    "/rank": true,
+    "/quiz": true,
+  }
+
+  console.log("from", from.path, "-", "to", to.path, userStore.session.id)
+  if (userStore.session.id){
+    if(to.path != "/login") {
+      next();
+    }
+  }
+  else if(!userStore.session.id && !requiresAuth[to.path]) {
+    next();
+  }
+  else {
+    next({ path: "/" })
+  }
+});
 
 router.isReady().then(() => {
   localStorage.removeItem('vuetify:dynamic-reload')

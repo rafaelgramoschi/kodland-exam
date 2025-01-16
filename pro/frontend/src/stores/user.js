@@ -5,9 +5,11 @@ import { reactive } from 'vue'
 
 export const useUserStore = defineStore('user', () => {
   const session = reactive({
-    id: 1, // user_id
-    score: null,
+    id: localStorage.getItem('session_id'),
+    score: localStorage.getItem('score'),
     reset: () => {
+      localStorage.setItem('session_id', '')
+      localStorage.setItem('score', '')
       session.id = null;
       session.score = null;
       router.push({ path: '/login' });
