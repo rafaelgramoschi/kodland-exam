@@ -5,6 +5,7 @@ import { reactive } from 'vue'
 
 export const useUserStore = defineStore('user', () => {
   const session = reactive({
+    // id: 1,
     id: localStorage.getItem('session_id'),
     score: localStorage.getItem('score'),
     reset: () => {
