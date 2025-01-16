@@ -1,12 +1,14 @@
 <script setup>
+import { useUserStore } from '@/stores/user';
+
+const userStore = useUserStore();
+
 const links = [
     { name: 'Home', icon: 'mdi-home' },
     { name: 'Quiz', icon: 'mdi-pencil-outline' },
     { name: 'Rank', icon: 'mdi-chevron-triple-up' },
     { name: 'Login/Signup', icon: 'mdi-login' },
 ];
-
-const userStore = { isLoggedin: false }
 </script>
 
 <template>
@@ -34,21 +36,21 @@ const userStore = { isLoggedin: false }
           :to="{ path: '/'}"
         ></v-tab>
 
-        <v-tab v-if="userStore.isLoggedin"
+        <v-tab v-if="userStore.session?.id"
           key="Quiz"
           text="Quiz"
           prepend-icon="mdi-pencil-outline"
           :to="{ path: '/quiz'}"
         ></v-tab>
 
-        <v-tab v-if="userStore.isLoggedin"
+        <v-tab v-if="userStore.session?.id"
           key="Rank"
           text="Rank"
           prepend-icon="mdi-chevron-triple-up"
           :to="{ path: '/rank'}"
         ></v-tab>
 
-        <v-tab
+        <v-tab v-if="!userStore.session?.id"
           key="Login/Signup"
           text="Login/Signup"
           prepend-icon="mdi-login"
@@ -57,10 +59,14 @@ const userStore = { isLoggedin: false }
       </v-tabs>
       <v-spacer></v-spacer>
 
-      <v-avatar v-if="userStore.isLoggedin"
+      <v-avatar v-if="userStore.session?.id"
         class="hidden-sm-and-down"
         color="grey-darken-1"
         size="32"
-      ></v-avatar>
+      >
+        <v-menu activator="parent" class="ma-3 pa-3">
+          <v-btn @click="userStore.session.reset();">Logout</v-btn>
+        </v-menu>
+      </v-avatar>
     </v-app-bar>
 </template>

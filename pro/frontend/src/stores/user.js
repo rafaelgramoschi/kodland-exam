@@ -1,11 +1,17 @@
 // Utilities
+import router from '@/router';
 import { defineStore } from 'pinia'
 import { reactive } from 'vue'
 
 export const useUserStore = defineStore('user', () => {
   const session = reactive({
-    id: '', // user_id
-    score: 0,
+    id: 1, // user_id
+    score: null,
+    reset: () => {
+      session.id = null;
+      session.score = null;
+      router.push({ path: '/login' });
+    }
   })
 
   return {
