@@ -2,7 +2,7 @@
 import { reactive } from 'vue';
 
 const FLASK_BE = import.meta.env.VITE_FLASK_BE;
-console.log("FLASK running on: ", FLASK_BE)
+console.log("FLASK running on 13:23: ", FLASK_BE)
 
 const loginForm = reactive({
   isValid: false,
@@ -10,7 +10,7 @@ const loginForm = reactive({
   password: '',
   login: async () => {
     if(!loginForm.isValid) return false;
-    let res = await fetch(`${FLASK_BE}/auth/login`, {
+    let res = await fetch(`/auth/login`, {
       method: 'POST',
       body: JSON.stringify(loginForm)
     });
@@ -26,7 +26,7 @@ const signupForm = reactive({
   repeatPassword: '',
   signup: async() => {
     if(!signupForm.isValid) return false;
-    let res = await fetch(`${FLASK_BE}/auth/signup`, {
+    let res = await fetch(`/auth/signup`, {
       method: 'POST',
       body: JSON.stringify(signupForm)
     });
