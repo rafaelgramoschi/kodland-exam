@@ -13,8 +13,7 @@ import { fileURLToPath, URL } from 'node:url'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  // base: '/', // for dev
-  base: '/static/', // for prod
+  base: '/',
   plugins: [
     VueRouter(),
     Layouts(),
