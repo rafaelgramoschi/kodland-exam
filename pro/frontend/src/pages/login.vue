@@ -20,7 +20,9 @@ const loginForm = reactive({
     })
     .then(r => result = r)
     .catch(e=> console.log(e))
-    console.log("LOGIN PROCESS ->", result);
+    userStore.session.id = result?.data?.user.id;
+    userStore.session.score = result?.data?.user.score;
+    console.log("LOGIN PROCESS ->", result?.status);
   }
 })
 
@@ -40,7 +42,7 @@ const signupForm = reactive({
     })
     .then(r => result = r)
     .catch(e=> console.log(e))
-    console.log("SINGUP PROCESS ->", result);
+    console.log("SIGNUP PROCESS ->", result);
   }
 })
 </script>
