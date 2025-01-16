@@ -7,7 +7,8 @@ from flask import (
 from werkzeug.security import check_password_hash, generate_password_hash
 #from flask_cors import cross_origin
 
-from db import get_db
+from db import get_db #prod
+# from .db import get_db #dev
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
@@ -15,6 +16,10 @@ bp = Blueprint('auth', __name__, url_prefix='/auth')
 #@cross_origin(origins="*", supports_credentials=True)
 def signup():
     if request.method == 'POST':
+        print("\n\nHEY!! signup\n\n")
+        f = request.form
+        d = request.data
+        print("\n\nform, data ->", f, d)
         data = request.get_json(force=True)
         username = data.get('username')
         password = data.get('password')
@@ -57,6 +62,9 @@ def users():
 @bp.route('/login', methods=['POST'])
 def login():
     if request.method == 'POST':
+        f = request.form
+        d = request.data
+        print("\n\nform, data ->", f, d)
         data = request.get_json(force=True)
         username = data.get('username')
         password = data.get('password')

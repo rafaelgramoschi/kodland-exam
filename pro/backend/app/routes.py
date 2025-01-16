@@ -2,8 +2,8 @@
 # mimetypes.add_type('application/javascript', '.js')
 # mimetypes.add_type('text/css', '.css')
 from flask import Flask, render_template
-#import db, auth #prod
-from . import db, auth
+import db, auth #prod
+#from . import db, auth #dev
 
 app = Flask(__name__)
 app.secret_key = 'dev'
