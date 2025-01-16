@@ -42,6 +42,8 @@ router.beforeEach((to, from, next) => {
   if (userStore.session.id){
     if(to.path != "/login") {
       next();
+    } else {
+      next({ path: "/" })
     }
   }
   else if(!userStore.session.id && !requiresAuth[to.path]) {
