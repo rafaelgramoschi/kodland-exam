@@ -1,13 +1,21 @@
 <script setup>
 import { reactive } from 'vue';
 
+const FLASK_BE = import.meta.env.VITE_FLASK_BE;
+console.log("FLASK running on: ", FLASK_BE)
+
 const loginForm = reactive({
   isValid: false,
   username: '',
   password: '',
   login: async () => {
     if(!loginForm.isValid) return false;
-    
+    let res = await fetch(`${FLASK_BE}/auth/login`, {
+      method: 'POST',
+      body: JSON.stringify(loginForm)
+    });
+    res = await res.json();
+    console.log("LOGIN PROCESS ->", res);
   }
 })
 
@@ -18,6 +26,12 @@ const signupForm = reactive({
   repeatPassword: '',
   signup: async() => {
     if(!signupForm.isValid) return false;
+    let res = await fetch(`${FLASK_BE}/auth/signup`, {
+      method: 'POST',
+      body: JSON.stringify(signupForm)
+    });
+    res = await res.json();
+    console.log("SIGNUP PROCESS ->", res);
   }
 })
 </script>
