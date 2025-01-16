@@ -63,7 +63,8 @@ const links = [
         class="hidden-sm-and-down"
         color="grey-darken-1"
         size="32"
-      >
+        
+      ><v-icon>mdi-professional-hexagon</v-icon>
         <v-menu activator="parent" class="ma-3 pa-3">
           <v-btn @click="userStore.session.reset();">Logout</v-btn>
         </v-menu>
