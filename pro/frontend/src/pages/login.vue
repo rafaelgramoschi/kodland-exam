@@ -1,5 +1,6 @@
 <script setup>
 import { reactive } from 'vue';
+import axios from 'axios';
 
 const FLASK_BE = import.meta.env.VITE_FLASK_BE;
 console.log("FLASK running on 13:23: ", FLASK_BE)
@@ -10,12 +11,16 @@ const loginForm = reactive({
   password: '',
   login: async () => {
     if(!loginForm.isValid) return false;
-    let res = await fetch(`/auth/login`, {
-      method: 'POST',
-      body: JSON.stringify(loginForm)
-    });
-    res = await res.json();
-    console.log("LOGIN PROCESS ->", res);
+    const form = JSON.parse(JSON.stringify(loginForm));
+    console.log("FORM::", form)
+    let result = null;
+    const res = await axios.post(`/auth/login`, {
+      username: form.username,
+      password: form.password
+    })
+    .then(r => result = r)
+    .catch(e=> console.log(e))
+    console.log("LOGIN PROCESS ->", result);
   }
 })
 
@@ -26,12 +31,16 @@ const signupForm = reactive({
   repeatPassword: '',
   signup: async() => {
     if(!signupForm.isValid) return false;
-    let res = await fetch(`/auth/signup`, {
-      method: 'POST',
-      body: JSON.stringify(signupForm)
-    });
-    res = await res.json();
-    console.log("SIGNUP PROCESS ->", res);
+    const form = JSON.parse(JSON.stringify(signupForm));
+    console.log("FORM::", form)
+    let result = null;
+    const res = await axios.post(`/auth/signup`, {
+      username: form.username,
+      password: form.password
+    })
+    .then(r => result = r)
+    .catch(e=> console.log(e))
+    console.log("SINGUP PROCESS ->", result);
   }
 })
 </script>
@@ -50,7 +59,7 @@ const signupForm = reactive({
                 :rules="[(v)=>!!v || 'obbligatorio']"
               ></v-text-field>
               <v-text-field density="comfortable"
-                label="Password"
+                label="Password" type="password"
                 v-model="loginForm.password"
                 :rules="[(v)=>!!v || 'obbligatorio']"
               ></v-text-field>
