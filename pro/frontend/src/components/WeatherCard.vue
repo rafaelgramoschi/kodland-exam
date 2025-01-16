@@ -1,11 +1,11 @@
 <script setup>
 const props = defineProps(['title', 'subtitle', 'weather', 'tempDay', 'tempNight'])
 const weatherTypes = {
-    sunny: 'mdi-weather-sunny',
-    cloudy: 'mdi-weather-cloudy',
-    foggy: 'mdi-weather-fog',
-    rainy: 'mdi-weather-pouring',
-    snowy: 'mdi-weather-snowy',
+    sole: 'mdi-weather-sunny',
+    nuvole: 'mdi-weather-cloudy',
+    nebbia: 'mdi-weather-fog',
+    pioggia: 'mdi-weather-pouring',
+    neve: 'mdi-weather-snowy',
 }
 </script>
 

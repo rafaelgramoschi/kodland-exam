@@ -37,7 +37,7 @@ const city = ref("Roma")
 const forecasting = reactive({
   yesterday: {
     date: '',
-    weather: 'sunny',
+    weather: 'sole',
     temperature: {
       day: 9,
       night: 5,
@@ -45,7 +45,7 @@ const forecasting = reactive({
   },
   today: {
     date: '',
-    weather: 'sunny',
+    weather: 'sole',
     temperature: {
       day: 14,
       night: 3,
@@ -53,7 +53,7 @@ const forecasting = reactive({
   },
   tomorrow: {
     date: '',
-    weather: 'foggy',
+    weather: 'nebbia',
     temperature: {
       day: 11,
       night: 2,
@@ -62,10 +62,10 @@ const forecasting = reactive({
 });
 
 function weatherCodeToString(code) {
-  if (code == 1) return 'sunny'
-  if (9 <= code <= 22) return 'cloudy'
-  if (23 <= code <= 28) return 'rainy'
-  if (29 <= code <= 35) return 'snowy'
+  if (code == 1) return 'sole'
+  if (9 <= code <= 22) return 'nuvole'
+  if (23 <= code <= 28) return 'pioggia'
+  if (29 <= code <= 35) return 'neve'
 }
 
 async function getCityLatLon() {
@@ -77,7 +77,6 @@ async function getCityLatLon() {
   return [lat, lon]
 }
 
-const meteo = ref({})
 async function fetchForecast() {
   const [lat, lon] = await getCityLatLon()
   let res = await fetch(`https://my.meteoblue.com/packages/basic-day?apikey=gbAE1SpKPoIJ6qzG&lat=${lat}&lon=${lon}&format=json&history_days=1&forecast_days=2`)
@@ -116,7 +115,7 @@ onMounted(async() => {
     <v-row class="justify-center">
       <v-col cols="3">
         <v-text-field density="comfortable"
-          v-model="city"
+          v-model="city" variant="solo-filled"
           placeholder="Cerca il nome di una città..."
         ></v-text-field>
       </v-col>
@@ -137,7 +136,7 @@ onMounted(async() => {
       </v-col>
       <v-col cols="4">
         <WeatherCard
-          title="Oggi"
+          :title="`${city} Oggi`"
           :subtitle="forecasting.today.date"
           :weather="forecasting.today.weather"
           :temp-day="forecasting.today.temperature.day"
