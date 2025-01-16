@@ -78,7 +78,7 @@ async function getCityLatLon() {
 }
 
 const meteo = ref({})
-async function fetchforecast() {
+async function fetchForecast() {
   const [lat, lon] = await getCityLatLon()
   let res = await fetch(`https://my.meteoblue.com/packages/basic-day?apikey=gbAE1SpKPoIJ6qzG&lat=${lat}&lon=${lon}&format=json&history_days=1&forecast_days=2`)
   res = await res.json()
