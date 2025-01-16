@@ -1,9 +1,22 @@
 <script setup>
 import { reactive } from 'vue';
 import axios from 'axios';
+import { useUserStore } from '@/stores/user';
 
-const FLASK_BE = import.meta.env.VITE_FLASK_BE;
-console.log("FLASK running on 13:23: ", FLASK_BE)
+const userStore = useUserStore();
+
+async function apiLogin(username, password) {
+  let result = null;
+  const res = await axios.post(`/auth/login`, {
+    username: username,
+    password: password
+  })
+  .then(r => result = r)
+  .catch(e=> console.log(e))
+  userStore.session.id = result?.data?.user.id;
+  userStore.session.score = result?.data?.user.score;
+  console.log("LOGIN PROCESS ->", result?.status);
+}
 
 const loginForm = reactive({
   isValid: false,
@@ -13,16 +26,7 @@ const loginForm = reactive({
     if(!loginForm.isValid) return false;
     const form = JSON.parse(JSON.stringify(loginForm));
     console.log("FORM::", form)
-    let result = null;
-    const res = await axios.post(`/auth/login`, {
-      username: form.username,
-      password: form.password
-    })
-    .then(r => result = r)
-    .catch(e=> console.log(e))
-    userStore.session.id = result?.data?.user.id;
-    userStore.session.score = result?.data?.user.score;
-    console.log("LOGIN PROCESS ->", result?.status);
+    await apiLogin(form.username, form.password);
   }
 })
 
@@ -42,7 +46,7 @@ const signupForm = reactive({
     })
     .then(r => result = r)
     .catch(e=> console.log(e))
-    console.log("SIGNUP PROCESS ->", result);
+    if(result?.status == 200) await apiLogin(form.username, form.password);
   }
 })
 </script>
