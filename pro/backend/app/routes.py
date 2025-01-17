@@ -11,7 +11,7 @@ from flask import (
 
 app = Flask(__name__)
 app.secret_key = 'dev'
-app.config['DATABASE'] = './sqlite.db'
+app.config['DATABASE'] = '/home/gramoschirafael/myapp/app/sqlite.db'
 db.init_app(app)
 
 app.register_blueprint(auth.bp)
