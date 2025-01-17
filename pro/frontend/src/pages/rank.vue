@@ -1,10 +1,15 @@
 <script setup>
+import { onMounted } from 'vue';
 
-const ranks = [
-  { id: 1, username: 'rafa' , score: 100 },
-  { id: 2, username: 'mario' , score: 50 },
-  { id: 3, username: 'edo' , score: 20 },
-]
+
+const ranks = ref([]);
+
+onMounted(async()=> {
+  const response = await fetch(`/ranks`);
+  const result = await response.json();
+  ranks.value = result?.data?.ranks;
+});
+
 </script>
 
 <template>
