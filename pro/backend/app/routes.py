@@ -25,8 +25,8 @@ def index():
 @app.route('/ranks', methods=['GET'])
 def ranks():
     if request.method == 'GET':
-        db = get_db()
-        users = db.execute(
+        dbc = db.get_db()
+        users = dbc.execute(
             'SELECT username, score FROM user'
         ).fetchall()
 
