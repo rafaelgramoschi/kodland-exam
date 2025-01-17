@@ -59,15 +59,18 @@ const links = [
       </v-tabs>
       <v-spacer></v-spacer>
 
-      <v-avatar v-if="userStore.session?.id"
-        class="hidden-sm-and-down"
-        color="grey-darken-1"
-        size="32"
-        
-      ><v-icon>mdi-professional-hexagon</v-icon>
-        <v-menu activator="parent" class="ma-3 pa-3">
-          <v-btn @click="userStore.session.reset();">Logout</v-btn>
-        </v-menu>
-      </v-avatar>
+      <div v-if="userStore.session?.id">
+        <span>[[ userStore.session.score ]]</span>
+        <v-avatar
+          class="hidden-sm-and-down"
+          color="grey-darken-1"
+          size="32"
+          
+        ><v-icon>mdi-professional-hexagon</v-icon>
+          <v-menu activator="parent" class="ma-3 pa-3">
+            <v-btn @click="userStore.session.reset();">Logout</v-btn>
+          </v-menu>
+        </v-avatar>
+      </div>
     </v-app-bar>
 </template>
