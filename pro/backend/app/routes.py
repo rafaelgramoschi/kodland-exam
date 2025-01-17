@@ -27,7 +27,7 @@ def ranks():
     if request.method == 'GET':
         dbc = db.get_db()
         users = dbc.execute(
-            'SELECT username, score FROM user'
+            'SELECT username, score FROM user ORDER BY score DESC'
         ).fetchall()
 
         users = [ {"username": user["username"], "score": user["score"]} for user in users ]
