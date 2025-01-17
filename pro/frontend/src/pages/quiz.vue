@@ -118,7 +118,7 @@ async function saveScore() {
     score: userStore.session.score
   });
   const result = await res.json();
-  console.log(result;)
+  console.log(result)
 }
 
 const explorer = reactive({
