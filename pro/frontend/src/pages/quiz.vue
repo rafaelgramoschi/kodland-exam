@@ -1,5 +1,7 @@
 <script setup>
+import router from '@/router';
 import { useUserStore } from '@/stores/user';
+import axios from 'axios';
 import { reactive } from 'vue';
 
 const userStore = useUserStore();
@@ -110,6 +112,15 @@ const exam = [
   ),
 ];
 
+async function saveScore() {
+  const res = await axios.post(`/score`, {
+    id: userStore.session.id,
+    score: userStore.session.score
+  });
+  const result = await res.json();
+  console.log(result;)
+}
+
 const explorer = reactive({
   showScore: false,
   index: 0,
@@ -119,7 +130,7 @@ const explorer = reactive({
   options: [],
   correctOptionIndex: null,
   userChoice: null,
-  next: () => {
+  next: async () => {
     if (explorer.done < exam.length) {
       if (explorer.index < exam.length) {
         explorer.index += 1;
@@ -135,9 +146,10 @@ const explorer = reactive({
       userStore.session.score += explorer.score;
       explorer.showScore = true;
       console.log("fatti tutti")
+      await saveScore();
     }
   },
-  check: () => {
+  check: async () => {
     if (explorer.userChoice == explorer.correctOptionIndex) {
       explorer.score += 10;
       console.log("Corretto!")
@@ -145,7 +157,7 @@ const explorer = reactive({
       console.log("tu hai detto: ", explorer.options[explorer.userChoice])
       console.log("Sbagliato, la risposta corretta: ", explorer.options[explorer.correctOptionIndex])
     }
-    explorer.next();
+    await explorer.next();
   }
 });
 

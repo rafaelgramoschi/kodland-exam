@@ -37,3 +37,31 @@ def ranks():
 
     return make_response(jsonify({ "response": "Empty" }), 400)
 
+
+@app.route('/score', methods=['POST'])
+def score():
+    if request.method == 'POST':
+        data = request.get_json(force=True)
+        user_id = data.get('id')
+        score = data.get('score')
+        dbc = db.get_db()
+        error = None
+
+        if not user_id:
+            error = 'user_id is required.'
+        elif not score:
+            error = 'score is required.'
+
+        if error is None:
+            try:
+                dbc.execute(
+                    "UPDATE user SET score = ? WHERE id = ?",
+                    (score, user_id),
+                )
+                dbc.commit()
+            except:
+                error = f"Database error"
+            else:
+                return make_response(jsonify({ "response": "success" }), 200)
+
+    return make_response(jsonify({ "response": f"{error}" }), 400)
